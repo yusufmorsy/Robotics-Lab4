@@ -58,16 +58,8 @@ lidar.enablePointCloud()
 ##### DO NOT MODIFY ANY CODE ABOVE THIS #####
 
 ##### Part 1: Setup Data structures
-#
-# Create an empty list for your lidar sensor readings here,
-# as well as an array that contains the angles of each ray 
-# in radians. The total field of view is LIDAR_ANGLE_RANGE,
-# and there are LIDAR_ANGLE_BINS. An easy way to generate the
-# array that contains all the angles is to use linspace from
-# the numpy package.
-
-
-
+lidar_amounts = [0]*LIDAR_ANGLE_BINS
+angles = np.linspace(-LIDAR_ANGLE_RANGE/2, LIDAR_ANGLE_RANGE/2, num=LIDAR_ANGLE_BINS, endpoint=True)
 #### End of Part 1 #####
  
 # Main Control Loop:
