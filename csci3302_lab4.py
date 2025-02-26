@@ -76,15 +76,22 @@ while robot.step(SIM_TIMESTEP) != -1:
     # Read Lidar           
     lidar_sensor_readings = lidar.getRangeImage() # rhos
     
-    
     ##### Part 2: Turn world coordinates into map coordinates
     #
     # Come up with a way to turn the robot pose (in world coordinates)
     # into coordinates on the map. Draw a red dot using display.drawPixel()
     # where the robot moves.
     
-
+    display.setColor(0xFF0000) #Red
+    display.drawPixel(pose_x*300, pose_y*300)
+    print(pose_x, pose_y)
     
+    display.setColor(0x0000FF) #White
+    #
+
+    display.setColor(0x0000FF) #Blue
+    #
+
     
     ##### Part 3: Convert Lidar data into world coordinates
     #
