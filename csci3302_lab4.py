@@ -58,8 +58,21 @@ lidar.enablePointCloud()
 ##### DO NOT MODIFY ANY CODE ABOVE THIS #####
 
 ##### Part 1: Setup Data structures
-lidar_amounts = [0]*LIDAR_ANGLE_BINS
+#
+# Create an empty list for your lidar sensor readings here,
+# as well as an array that contains the angles of each ray 
+# in radians. The total field of view is LIDAR_ANGLE_RANGE,
+# and there are LIDAR_ANGLE_BINS. An easy way to generate the
+# array that contains all the angles is to use linspace from
+# the numpy package.
+
+#lidar_amounts = [0]*LIDAR_ANGLE_BINS
 angles = np.linspace(-LIDAR_ANGLE_RANGE/2, LIDAR_ANGLE_RANGE/2, num=LIDAR_ANGLE_BINS, endpoint=True)
+
+#print(angles[0])
+#print(angles[LIDAR_ANGLE_BINS-1])
+
+
 #### End of Part 1 #####
  
 # Main Control Loop:
@@ -77,34 +90,29 @@ while robot.step(SIM_TIMESTEP) != -1:
     lidar_sensor_readings = lidar.getRangeImage() # rhos
     
     ##### Part 2: Turn world coordinates into map coordinates
-    #
-    # Come up with a way to turn the robot pose (in world coordinates)
-    # into coordinates on the map. Draw a red dot using display.drawPixel()
-    # where the robot moves.
-    
     display.setColor(0xFF0000) #Red
     display.drawPixel(pose_x*300, pose_y*300)
-    print(pose_x, pose_y)
     
-    display.setColor(0x0000FF) #White
-    #
-
-    display.setColor(0x0000FF) #Blue
-    #
-
     
     ##### Part 3: Convert Lidar data into world coordinates
-    #
-    # Each Lidar reading has a distance rho and an angle alpha.
-    # First compute the corresponding rx and ry of where the lidar
-    # hits the object in the robot coordinate system. Then convert
-    # rx and ry into world coordinates wx and wy. 
-    # The arena is 1x1m2 and its origin is in the top left of the arena. 
-    
+    display.setColor(0x0000FF) #Blue
+
+    map_size = 300
+    for i in range(LIDAR_ANGLE_BINS):
+        if (abs(lidar_sensor_readings[i]) < 100):
+            dist = lidar_sensor_readings[i]
+            angle = pose_theta - angles[i]
+            
+            display.drawPixel(map_size * (pose_x + (math.sin(angle) * dist)), map_size * (pose_y + (math.cos(angle) * dist)))
 
     
-    
     ##### Part 4: Draw the obstacle and free space pixels on the map
+    display.setColor(0x0000FF) #White
+    
+    #ANNA
+
+
+
  
     
           
