@@ -1,4 +1,3 @@
-
 # """csci3302_lab4 controller."""
 # Copyright (2025) University of Colorado Boulder
 # CSCI 3302: Introduction to Robotics
@@ -68,12 +67,6 @@ lidar.enablePointCloud()
 
 #lidar_amounts = [0]*LIDAR_ANGLE_BINS
 angles = np.linspace(-LIDAR_ANGLE_RANGE/2, LIDAR_ANGLE_RANGE/2, num=LIDAR_ANGLE_BINS, endpoint=True)
-
-#print(angles[0])
-#print(angles[LIDAR_ANGLE_BINS-1])
-
-
-#### End of Part 1 #####
  
 # Main Control Loop:
 while robot.step(SIM_TIMESTEP) != -1:     
@@ -90,37 +83,29 @@ while robot.step(SIM_TIMESTEP) != -1:
     lidar_sensor_readings = lidar.getRangeImage() # rhos
     
     ##### Part 2: Turn world coordinates into map coordinates
-    display.setColor(0xFF0000) #Red
-    display.drawPixel(pose_x*300, pose_y*300)
-    
+    map_size = 300 #converts meters to pixels
     
     ##### Part 3: Convert Lidar data into world coordinates
-    display.setColor(0x0000FF) #Blue
-
-    map_size = 300
+    #uses the same scale conversion as in Part 2, angle calculation is done in the draw function
+    
+    ##### Part 4: Draw the obstacle and free space pixels on the map
     for i in range(LIDAR_ANGLE_BINS):
-        if (abs(lidar_sensor_readings[i]) < 100):
+        if (abs(lidar_sensor_readings[i]) < 1):
             dist = lidar_sensor_readings[i]
             angle = pose_theta - angles[i]
             
+            #Draw free space in white
+            display.setColor(0xFFFFFF)
+            display.drawLine(map_size * pose_x, map_size * pose_y, map_size * (pose_x + (math.sin(angle) * dist)), map_size * (pose_y + (math.cos(angle) * dist)))
+
+            #Draw obstacles in blue
+            display.setColor(0x0000FF)
             display.drawPixel(map_size * (pose_x + (math.sin(angle) * dist)), map_size * (pose_y + (math.cos(angle) * dist)))
 
-    
-    ##### Part 4: Draw the obstacle and free space pixels on the map
-    display.setColor(0x0000FF) #White
-    
-    #ANNA
+    #Draw robot path in red
+    display.setColor(0xFF0000)
+    display.drawPixel(map_size * pose_x, map_size * pose_y)
 
-
-
- 
-    
-          
-
-    
- 
-
-    
     # DO NOT CHANGE THE FOLLOWING CODE (You might only add code to display robot poses)
     #####################################################
     #                 Robot controller                  #
